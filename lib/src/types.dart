@@ -6404,11 +6404,14 @@ class URLRequest {
     if (map == null) {
       return null;
     }
+    String? strBody = map["body"];
+    final body = Uint8List.fromList(strBody?.codeUnits ?? []);
+
     return URLRequest(
       url: map["url"] != null ? Uri.parse(map["url"]) : null,
       headers: map["headers"]?.cast<String, String>(),
       method: map["method"],
-      body: map["body"],
+      body: body,
       iosAllowsCellularAccess: map["iosAllowsCellularAccess"],
       iosAllowsConstrainedNetworkAccess:
           map["iosAllowsConstrainedNetworkAccess"],
