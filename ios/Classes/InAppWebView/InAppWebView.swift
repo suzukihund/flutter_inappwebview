@@ -2367,7 +2367,12 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     }
     
     public func shouldOverrideUrlLoading(navigationAction: WKNavigationAction, result: FlutterResult?) {
-        channel?.invokeMethod("shouldOverrideUrlLoading", arguments: navigationAction.toMap(), result: result)
+        var arg = navigationAction.toMap()
+        if let body = navigationAction.request.httpBody {
+            let str = String(data: body, encoding: .utf8)
+            arg["body"] = str
+        }
+        channel?.invokeMethod("shouldOverrideUrlLoading", arguments: arg, result: result)
     }
     
     public func onNavigationResponse(navigationResponse: WKNavigationResponse, result: FlutterResult?) {
